@@ -1,6 +1,6 @@
 # Food-Connoisseur
 
-Team Name: SuperNovas
+Team Name: Casanovas
 Team Members: 
 Ruchir Bajaj 
 Shiva Kumar
