@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Connoisseur</title>
+    <link rel="shortcut icon" href="https://designimages.appypie.com/favicon/restaurantfavicon-1-person-human.jpg"
+        type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@500&display=swap');
+
+        * {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0px;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            background-color: black;
+            color: white;
+            width: 100%;
+            position: sticky;
+            top: 0px;
+            z-index: 1;
+        }
+
+        #left {
+            display: flex;
+            justify-content: left;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        #right {
+            display: flex;
+            justify-content: right;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            list-style: none;
+            margin: 10px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+
+        .item a {
+            color: white;
+            text-decoration: none;
+
+        }
+
+        .item a:hover {
+            color: #f3ca20;
+        }
+
+        .item img {
+            height: 40px;
+            margin: 5px 10px;
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            justify-content: center;
+        }
+
+        header h1 {
+            margin-left: 25px;
+            margin-top: 150px;
+            margin-bottom: 50px;
+            font-size: 75px;
+        }
+
+        header p {
+            font-size: 25px;
+            margin: 30px;
+            margin-left: 0;
+            background-color: black;
+            color: white;
+            padding: 25px;
+            width: 525px;
+            /* border: 5px solid white; */
+            border-left: 0;
+            border-radius: 50px;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+        }
+
+        body::before {
+            content: "";
+            background-image: url('https://img.freepik.com/free-photo/chicken-wings-barbecue-sweetly-sour-sauce-picnic-summer-menu-tasty-food-top-view-flat-lay_2829-6471.jpg?w=2000');
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 100%;
+            opacity: 0.9;
+            position: fixed;
+            z-index: -1;
+            background-size: cover;
+        }
+
+        #upload {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px;
+        }
+
+        #form-file {
+            display: none;
+        }
+
+        .btn {
+            color: white;
+            background-color: black;
+            border: 2px solid white;
+            border-radius: 5px;
+            height: 50px;
+            width: 100px;
+            font-size: 20px;
+            margin: 40px 20px;
+        }
+
+        label.btn {
+            padding: 12px 14.61px;
+        }
+
+        .btn:hover {
+            color: #f3ca20;
+            /* background-color: rgb(87, 87, 87); */
+            border: 2px solid #f3ca20;
+        }
+
+        #classify {
+            margin: 200px 0px;
+            background-color: black;
+            display: flex;
+            flex-direction: column;
+            padding: 60px 100px;
+            margin-bottom: 0px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #classify p {
+            font-size: 25px;
+            color: white;
+        }
+
+        #wallet {
+            border: 4px solid white;
+            border-radius: 10px;
+            padding: 5px 10px;
+        }
+
+        #wallet:hover {
+            border: 4px solid #f3ca20;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul id="left">
+            <li class="item"><a href="/">LOGO</a></li>
+            <li class="item"><a href="/">Home</a></li>
+            <li class="item"><a href="#classify">Classify</a></li>
+        </ul>
+        <ul id="right">
+            <li class="item"><a href="#">About Us</a></li>
+            <li class="item"><a href="#">Contact Us</a></li>
+            <li class="item"><a href="#" id="wallet" onclick="connect()">Wallet</a></li>
+        </ul>
+    </nav>
+    <header>
+        <h1>Food Connoisseur</h1>
+        <p>Identify what you're eating and get recipes <br>for what you're looking for <br>with just one upload.</p>
+        <!-- <a href="#classify" class="btn">Classify</a> -->
+    </header>
+    <section id="classify">
+        <div>
+            <p>To identify a food, one has to "think" it, to understand its place in the world and therefore understand
+                the world, and in particular to distinguish, order and classify the elements of which it consists.</p>
+        </div>
+        <form method="post" enctype="multipart/form-data" action="{%url 'upload'%}" id="imageform">
+            {% csrf_token %}
+            <label for="form-file" class="btn">Classify</label>
+            <!-- <input type="file" name="file" id="form-file"> -->
+            {{forms.file}}
+            <!-- <button type="submit" class="btn">Classify</button> -->
+        </form>
+    </section>
+    <script>
+        document.getElementById("form-file").onchange = function () {
+            document.getElementById("imageform").submit();
+        };
+        async function connect() {
+            const getProvider = () => {
+                if ('phantom' in window) {
+                    const provider = window.phantom?.solana;
+                    if (provider?.isPhantom) {
+                        return provider;
+                    }
+                }
+    
+                window.open('https://phantom.app/', '_blank');
+            };
+            const provider = getProvider();
+            try {
+                const resp = await provider.connect();
+                console.log(resp.publicKey.toString());
+            } catch (err) {
+               console.log(err);
+            }
+            console.log(provider.publicKey.toString());
+            console.log(provider.isConnected);
+            if(provider.isConnected){
+                alert("wallet Connected");
+                document.getElementById("wallet").innerText = "Connected";
+            }
+            else {
+                document.getElementById("wallet").innerText = "Wallet";
+            }
+        }
+    </script>
+</body>
+
+</html>

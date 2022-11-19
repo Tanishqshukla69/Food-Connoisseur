@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Connoisseur</title>
+    <link rel="shortcut icon" href="https://designimages.appypie.com/favicon/restaurantfavicon-1-person-human.jpg"
+        type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@500&display=swap');
+
+        * {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0px;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            background-color: black;
+            color: white;
+            width: 100%;
+            position: sticky;
+            top: 0px;
+            z-index: 1;
+        }
+
+        #left {
+            display: flex;
+            justify-content: left;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        #right {
+            display: flex;
+            justify-content: right;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            list-style: none;
+            margin: 10px;
+            font-weight: 800;
+        }
+
+        .item a {
+            color: white;
+            text-decoration: none;
+
+        }
+
+        .item a:hover {
+            color: #f3ca20;
+        }
+
+        .item img {
+            height: 40px;
+            margin: 5px 10px;
+        }
+
+        header {
+            margin: 210px 25px;
+            display: flex;
+            flex-direction: column;
+            /* align-items: right;
+            justify-content: flex-end; */
+        }
+
+        header h1 {
+            font-size: 58px;
+        }
+
+        h1 span {
+            color: #f3ca20;
+        }
+
+        header p {
+            font-size: 20px;
+            margin: 0px;
+        }
+
+        body::before {
+            content: "";
+            background-image: url('https://wallpaperaccess.com/full/271694.jpg');
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 100%;
+            opacity: 1;
+            position: fixed;
+            z-index: -1;
+            background-size: cover;
+        }
+
+        #recipe {
+            display: flex;
+        }
+        #tip-button {
+            margin: 0 10px;
+        }
+        #recipe h1 {
+            border-radius: 8px;
+            text-align: center;
+        }
+        #recipe a {
+            font-size: 30px;
+            text-decoration: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        #recipe a:hover {
+            color: #f3ca20;
+        }
+
+        section {
+            padding: 25px;
+            margin: 0px 10px;
+            padding-left: 0px;
+        }
+
+        #ingredients li {
+            margin: 10px;
+            list-style: none;
+        }
+
+        #nutrients {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #nutrients div {
+            display: flex;
+            flex-direction: row;
+            margin-top: 10px;
+            margin-left: 46px;
+        }
+
+        #nutrients div span {
+            margin-right: 8px;
+        }
+
+        section h1 {
+            background-color: black;
+            color: white;
+            padding: 25px;
+            margin: 0px;
+            width: 200px;
+        }
+
+        #wallet {
+            border: 4px solid white;
+            border-radius: 10px;
+            padding: 5px 10px;
+        }
+
+        #wallet:hover {
+            border: 4px solid #f3ca20;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul id="left">
+            <li class="item"><a href="/">LOGO</a></li>
+            <li class="item"><a href="/">Home</a></li>
+            <li class="item"><a href="#nutrients">Nutrients</a></li>
+            <li class="item"><a href="#ingredients">Ingredients</a></li>
+            <li class="item"><a href="#recipe">Recipe</a></li>
+        </ul>
+        <ul id="right">
+            <li class="item"><a href="#">About Us</a></li>
+            <li class="item"><a href="#">Contact Us</a></li>
+            <li class="item"><a href="#" id="wallet" onclick="connect()">Connected</a></li>
+        </ul>
+    </nav>
+    <header id="home">
+        <h1>The picture uploaded <br>was a <span>{{result}}</span></h1>
+        <p>Scroll down for more information</p>
+    </header>
+    <section id="nutrients">
+        <h1>Nutrients : </h1>
+        {% for key1,value1 in Nutrients.items %}
+        <div>
+            {% for key2,value2 in value1.items %}
+            <span>{{value2}} </span>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </section>
+    <section id="ingredients">
+        <h1>Ingredients :</h1>
+        <ul>
+            {% for d in ingredients %}
+            <li>{{d}}</li>
+            {% endfor %}
+        </ul>
+    </section>
+    <section id="recipe">
+        <h1><a href="{{recipe}}" target="_blank">Get recipe</a></h1>
+        <h1 id="tip-button" ><a href="https://www.zomato.com/ncr/delivery?dishv2_id=66471" target="_blank">Order Now!!</a></h1>
+
+    </section>
+    <script>
+        async function connect() {
+            const getProvider = () => {
+                if ('phantom' in window) {
+                    const provider = window.phantom?.solana;
+                    if (provider?.isPhantom) {
+                        return provider;
+                    }
+                }
+    
+                window.open('https://phantom.app/', '_blank');
+            };
+            const provider = getProvider();
+            try {
+                const resp = await provider.connect();
+                console.log(resp.publicKey.toString());
+            } catch (err) {
+               console.log(err);
+            }
+            console.log(provider.publicKey.toString());
+            console.log(provider.isConnected);
+            if(provider.isConnected){
+                alert("wallet Connected");
+                document.getElementById("wallet").innerText = "Connected";
+            }
+            else {
+                document.getElementById("wallet").innerText = "Wallet";
+            }
+        }
+    </script>
+</body>
+
+
+</html>
