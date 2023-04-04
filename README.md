@@ -6,6 +6,7 @@ Ruchir Bajaj
 Shiva Kumar
 Tanishq Shukla
 Viraj Khanna
+Amar Pandey
 
 
 
